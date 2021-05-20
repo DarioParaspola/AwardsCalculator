@@ -4,6 +4,7 @@
   "description": "",
   "main": "./src/app.js",
   "scripts": {
+    "start": "node ./src/app.js",
     "test": "npx jest --verbose --runInBand",
     "test:watch": "npx jest --verbose --watch"
   },
