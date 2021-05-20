@@ -6,10 +6,22 @@ const sellers = utils.initData();
 
 var calculator = new AwardCalculator();
 
-var winnerSeller = calculator.calculateWinningSeller(sellers, moment.utc());
-var sellerMonitor = calculator.monitoringSellerActivities(sellers);
+const date = moment.utc();
+console.log(`Winner for month: ${date}`);
+var maySeller = calculator.calculateWinningSeller(sellers, date);
+console.log(maySeller);
 
-console.log(winnerSeller);
+const juneDate = moment("2021-06-15");
+console.log(`Winner for month: ${juneDate}`);
+var juneSeller = calculator.calculateWinningSeller(sellers, juneDate);
+console.log(juneSeller);
+
+const julyDate = moment("2021-07-15");
+console.log(`Winner for month: ${julyDate}`);
+var julySeller = calculator.calculateWinningSeller(sellers, julyDate);
+console.log(julySeller);
+
+var sellerMonitor = calculator.monitoringSellerActivities(sellers);
 sellerMonitor.forEach(element => {
     console.log(`Seller: ${element.Name}, MounthWithRevenues: ${element.MounthWithRevenues}`);
 });
