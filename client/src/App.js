@@ -14,14 +14,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 
 import { demoDataset } from './demoDataset';
 import Utils from './components/utils';
 import AwardCalculator from './components/awardCalculator';
 import MomentTimePicker from './components/momentTimePicker'
-import SellerMonitor from './components/sellerMonitor'
+import SellerMonitor from './components/sellerMonitor';
+import WinnerReport from './components/winnerResult';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,6 +52,7 @@ const App = () => {
   const [revenue, setRevenue] = useState("");
   const [winnerSeller, setWinner] = useState({});
   const [showWinner, setShowWinner] = useState(false);
+  const [enabledSave, setEnableSave] = useState(false);
 
   const demo = () => {
     setSellers(demoDataset);
@@ -98,7 +98,12 @@ const App = () => {
     setWinner(result);
     setShowWinner(true);
   };
-  
+
+  const saveRevenue = (e) => {
+    setRevenue(e.target.value);
+    setEnableSave(true);
+  }
+
   return (
     <div className="App">
       <Container>
@@ -160,7 +165,7 @@ const App = () => {
                 id="revenue"
                 label="Revenue"
                 value={revenue}
-                onChange={e => setRevenue(e.target.value)} />
+                onChange={e => saveRevenue(e)} />
               <Grid container spacing={3} justify="flex-end">
                 <Grid item xs={4} >
                   <Button
@@ -170,6 +175,7 @@ const App = () => {
                     className={classes.button}
                     startIcon={<SaveIcon />}
                     onClick={addSellerRevenue}
+                    disabled={!enabledSave}
                   >
                     Save Revenue
               </Button>
@@ -198,25 +204,17 @@ const App = () => {
                 className={classes.button2}
                 startIcon={<FunctionsIcon />}
                 onClick={calculateAward}
+                disabled={sellers.length <= 0}
               >
                 Calculate
               </Button>
             </Grid>
             <Grid item xs={6}>
-              <Card className={classes.root} variant="outlined">
-                <CardContent>
-                  <Typography variant="h5" component="h2">
-                    Award Winner
-        </Typography>
-                  <Typography variant="body2" component="p">
-                    Name: {showWinner && winnerSeller.name}
-                    <br />
-                    Revenue increase: {showWinner && winnerSeller.revenueIncrease}
-                    <br />
-                    Mounth: {showWinner && awardDate.format('MMMM YYYY')}
-                  </Typography>
-                </CardContent>
-              </Card>
+              <WinnerReport
+                show={showWinner}
+                winner={winnerSeller}
+                awardDate={awardDate}
+                classes={classes} />
             </Grid>
           </Grid>
         </Paper>
