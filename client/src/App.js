@@ -1,6 +1,4 @@
-import logo from './logo.svg';
-import './App.css';
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 import Grid from '@material-ui/core/Grid';
@@ -9,30 +7,21 @@ import Container from '@material-ui/core/Container';
 import { Typography, Divider } from "@material-ui/core";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import SaveIcon from '@material-ui/icons/Save';
 import FunctionsIcon from '@material-ui/icons/Functions';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
-import MomentUtils from '@date-io/moment';
+import StorageIcon from '@material-ui/icons/Storage';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-import Utils from './utils';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import AwardCalculator from './awardCalculator';
-import StorageIcon from '@material-ui/icons/Storage';
-import { demoDataset } from './demoDataset';
 
+import { demoDataset } from './demoDataset';
+import Utils from './components/utils';
+import AwardCalculator from './components/awardCalculator';
+import MomentTimePicker from './components/momentTimePicker'
+import SellerMonitor from './components/sellerMonitor'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,7 +64,6 @@ const App = () => {
       monthlyRevenues: []
     };
     setSellers([...sellers, seller]);
-    console.log(sellers);
   }
 
   const addSellerRevenue = () => {
@@ -93,35 +81,13 @@ const App = () => {
     setSellers(updatedSellers);
   }
 
-  const createRows = () => {
-    return sellers.map((seller, key) => (
-      seller.monthlyRevenues.length === 0
-        ? <TableRow key={`${seller.name}_${key}`}>
-          <TableCell component="th" scope="row">
-            {seller.name}
-          </TableCell>
-        </TableRow>
-        : seller.monthlyRevenues.map((v, key) => (
-          <TableRow key={`${seller.name}_${key}`}>
-            <TableCell component="th" scope="row" key={key}>
-              {seller.name}
-            </TableCell>
-            <TableCell key={key}>{v.monthName}</TableCell>
-            <TableCell key={key}>{v.year}</TableCell>
-            <TableCell key={key}>{v.value}</TableCell>
-          </TableRow>
-        ))
-    ));
-  };
-
   const handleRevenueDateChange = (date) => {
     setRevenueDate(date);
   };
   const handleAwardDateChange = (date) => {
     setAwardDate(date);
   };
-
-  const handleChange = (event) => {
+  const handleSellerChange = (event) => {
     setSelectedSeller(event.target.value);
   };
 
@@ -132,11 +98,7 @@ const App = () => {
     setWinner(result);
     setShowWinner(true);
   };
-
-  useEffect(() => {
-    createRows();
-  }, [sellers]);
-
+  
   return (
     <div className="App">
       <Container>
@@ -177,7 +139,7 @@ const App = () => {
               </Button>
             </Grid>
             <Grid item xs={7}>
-              Menage Seller
+              Menage Sellers
           <Divider />
               <FormControl className={classes.formControl}>
                 <InputLabel id="seller">Seller</InputLabel>
@@ -185,24 +147,14 @@ const App = () => {
                   labelId="seller"
                   id="sellername"
                   value={selectedSeller}
-                  onChange={handleChange}
+                  onChange={handleSellerChange}
                 >{sellers.map((s, key) => (<MenuItem key={key} value={s.name}>{s.name}</MenuItem>))}
                 </Select>
               </FormControl>
-              <MuiPickersUtilsProvider utils={MomentUtils}>
-                <KeyboardDatePicker
-                  disableToolbar
-                  format="DD/MM/yyyy"
-                  margin="normal"
-                  id="date-of.revenue"
-                  label="Date of revenue"
-                  clearable
-                  views={["year", "month", "date"]}
-                  value={revenueDate}
-                  onChange={handleRevenueDateChange}
-                />
-              </MuiPickersUtilsProvider>
-
+              <MomentTimePicker
+                label="Date of revenue"
+                value={revenueDate}
+                onChange={handleRevenueDateChange} />
               <TextField
                 className={classes.button}
                 id="revenue"
@@ -227,42 +179,18 @@ const App = () => {
             <Grid item xs={12}>
               Seller Monitor
               <Divider />
-              <TableContainer component={Paper}>
-                <Table className={classes.table} aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Seller</TableCell>
-                      <TableCell>Month</TableCell>
-                      <TableCell>Year</TableCell>
-                      <TableCell>Revenue</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {createRows()}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+              <SellerMonitor
+                sellers={sellers} />
             </Grid>
             <Grid item xs={12}>
               Calculate the Winner Seller
             <Divider />
             </Grid>
             <Grid item xs={6}>
-              <MuiPickersUtilsProvider utils={MomentUtils}>
-                <KeyboardDatePicker
-                  disableToolbar
-                  format="DD/MM/yyyy"
-                  margin="normal"
-                  id="date-of.revenue"
-                  label="Award date"
-                  clearable
-                  value={awardDate}
-                  onChange={handleAwardDateChange}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                  }}
-                />
-              </MuiPickersUtilsProvider>
+              <MomentTimePicker
+                label="Award date"
+                value={awardDate}
+                onChange={handleAwardDateChange} />
               <Button
                 variant="contained"
                 color="default"
