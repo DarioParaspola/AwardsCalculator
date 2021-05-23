@@ -4,7 +4,7 @@ import moment from 'moment';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
-import { Typography, Divider } from "@material-ui/core";
+import { Divider } from "@material-ui/core";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
@@ -16,11 +16,12 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 
 import { demoDataset } from './demoDataset';
-import Utils from './components/utils';
+import Utility from './components/utility';
 import AwardCalculator from './components/awardCalculator';
 import MomentTimePicker from './components/momentTimePicker'
 import SellerMonitor from './components/sellerMonitor';
 import WinnerReport from './components/winnerResult';
+import Navbar from './components/navbar'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -72,13 +73,8 @@ const App = () => {
       month: revenueDate.month() + 1,
       year: revenueDate.year(),
       value: parseInt(revenue)
-    };
-
-    var seller = Utils.filterSellerByName(sellers, selectedSeller);
-    var updatedSeller = Utils.addMounthRevenue(seller, currentRevenue);
-    var updatedSellers = Utils.updateSellers(sellers, updatedSeller);
-
-    setSellers(updatedSellers);
+    };        
+    setSellers(Utility.save(sellers, selectedSeller, currentRevenue));
   }
 
   const handleRevenueDateChange = (date) => {
@@ -107,11 +103,7 @@ const App = () => {
   return (
     <div className="App">
       <Container>
-        <div>
-          <Typography variant="h3" gutterBottom>
-            Homework
-          </Typography>
-        </div>
+        <Navbar title="Homework" />
         <Paper className={classes.paper} elevation={4}>
           <Grid container spacing={3} justify="flex-end">
             <Grid item xs={5} >

@@ -9,13 +9,13 @@ const winnerReport = ({ show, winner, awardDate, classes }) => {
         <CardContent>
             <Typography variant="h5" component="h2">
                 Award Winner
-</Typography>
+            </Typography>
             <Typography variant="body2" component="p">
                 Name: {show && winner.name}
                 <br />
-        Revenue increase: {show && winner.revenueIncrease}
+                Revenue increase: {show && winner.revenueIncrease}
                 <br />
-        Mounth: {show && awardDate.format('MMMM YYYY')}
+                Mounth: {show && awardDate.format('MMMM YYYY')}
             </Typography>
         </CardContent>
     </Card>);

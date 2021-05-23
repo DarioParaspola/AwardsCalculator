@@ -5,7 +5,7 @@ class AwardCalculator {
         var year = date.year();
         var month = date.month() + 1;
 
-        var sellers = candidateSellers.map(seller => {
+        return this.extractWinnerSeller(candidateSellers.map(seller => {
             var currentMonthRevenues = seller.monthlyRevenues.filter(revenue => {
                 return revenue.month === month;
             });
@@ -18,15 +18,12 @@ class AwardCalculator {
                 revenueIncrease = this.calculateRatioRevenue(currentYearRevenue.value, lastYearRevenue.value);
 
             return { name: seller.name, revenueIncrease: revenueIncrease };
-        });
-
-        var winnerSeller = this.extractWinnerSeller(sellers);
-        return winnerSeller;
+        }));        
     }
 
-    static filterByYear(month, year) {
-        if (month)
-            return month.find(c => {
+    static filterByYear(yearByMonth, year) {
+        if (yearByMonth)
+            return yearByMonth.find(c => {
                 return c.year === year;
             });
     }
@@ -38,7 +35,9 @@ class AwardCalculator {
 
     static extractWinnerSeller(sellers) {
         return sellers.reduce((prev, curr) => {
-            return (Math.abs(curr.revenueIncrease - goldenRatio) < Math.abs(prev.revenueIncrease - goldenRatio) ? curr : prev);
+            return (Math.abs(curr.revenueIncrease - goldenRatio) < Math.abs(prev.revenueIncrease - goldenRatio) 
+            ? curr 
+            : prev);
         });
     }
 }

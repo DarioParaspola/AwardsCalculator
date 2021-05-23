@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import blueGrey from "@material-ui/core/colors/blueGrey";
+import lightBlue from "@material-ui/core/colors/lightBlue";
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,7 +11,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 const Cell = withStyles((theme) => ({
     head: {
-        backgroundColor: blueGrey[100],
+        backgroundColor: lightBlue[50],
         color: theme.palette.common.black,
     },
     body: {
@@ -30,6 +30,9 @@ const Row = withStyles((theme) => ({
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
+    },
+    container: {
+        marginTop: theme.spacing(2),
     }
 }));
 
@@ -61,7 +64,7 @@ const sellerMonitor = ({ sellers }) => {
         ));
     };
 
-    return (<TableContainer component={Paper}>
+    return (<TableContainer component={Paper} className={classes.container}>
         <Table className={classes.table} aria-label="simple table">
             <TableHead>
                 <TableRow>
@@ -76,7 +79,6 @@ const sellerMonitor = ({ sellers }) => {
             </TableBody>
         </Table>
     </TableContainer>);
-
 }
 
 export default sellerMonitor;

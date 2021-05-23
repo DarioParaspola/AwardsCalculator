@@ -19,8 +19,13 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "npx jest --verbose --runInBand",
+    "test": "jest --verbose --runInBand",
     "eject": "react-scripts eject"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    }
   },
   "eslintConfig": {
     "extends": [
@@ -39,5 +44,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.14.2",
+    "babel-jest": "^23.6.0"
   }
 }

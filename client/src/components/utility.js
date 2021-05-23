@@ -1,5 +1,13 @@
-
 class Utility {
+
+    static save = (sellers, name, revenue) => {
+        return this.updateSellers(
+            sellers,
+            this.addMounthRevenue(
+                this.filterSellerByName(sellers, name),
+                revenue));
+    }
+
     static filterSellerByName = (sellers, name) => {
         return sellers.find(s => {
             return s.name === name;
@@ -24,8 +32,7 @@ class Utility {
         var cloned = Array.from(sellers);
         var sellerIndex = cloned.findIndex(s => s.name === updatedSeller.name);
         cloned.splice(sellerIndex, 1)
-        var result = [...cloned, cloned[sellerIndex] = updatedSeller];
-        return result;
-    }    
+        return [...cloned, cloned[sellerIndex] = updatedSeller];
+    }
 }
 export default Utility;
