@@ -175,12 +175,6 @@ const App = () => {
               </Grid>
             </Grid>
             <Grid item xs={12}>
-              Seller Monitor
-              <Divider />
-              <SellerMonitor
-                sellers={sellers} />
-            </Grid>
-            <Grid item xs={12}>
               Calculate the Winner Seller
             <Divider />
             </Grid>
@@ -208,6 +202,12 @@ const App = () => {
                 awardDate={awardDate}
                 classes={classes} />
             </Grid>
+            <Grid item xs={12}>
+              Seller Monitor
+              <Divider />
+              <SellerMonitor
+                sellers={sellers} />
+            </Grid>            
           </Grid>
         </Paper>
       </Container>
